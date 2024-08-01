@@ -1,39 +1,77 @@
-const myLibrary = [];
+const myLibrary = []
 
-function book (name,author,pages,read){
-   this.title = prompt("what book do you want to store")
-   this.author = prompt("who is the author of the book")
-   this.pages= prompt("how many pages is it?")
-   this.read = prompt("have it been read?")
+// the object constractor 
+function Book(title,author,pages,read){
+    this.title = title
+    this.author = author
+    this.pages = pages
+    this.read = read
 }
 
-function addBookToLibrary(){
-    let info = new book()
+//store the data in an array
+function addBookToLibrary(title,author,pages,read){
+    const info = new Book(title,author,pages,read)
     myLibrary.push(info)
+    displaytheinfo();
+     
+}
+// display the data in the window
+function displaytheinfo(){
+    const book = document.querySelector(".book")
+    book.innerHTML = "";
+    myLibrary.forEach(myLibrary => {
+        const card = document.createElement("div")
+        card.classList.add("card")
+        book.appendChild(card)
+        for (let key in myLibrary){
+            const para = document.createElement("p")
+            para.textContent = (`${key}: ${myLibrary[key]}`)
+            card.appendChild(para)
+        }
+
+    })   
 }
 
-addBookToLibrary()
-console.log(myLibrary)
-let content = document.querySelector("table")
-let row = document.createElement("tr")
-let addtitle = document.createElement("th")
-let addauthor = document.createElement("th")
-let addpage = document.createElement("th")
-let addread = document.createElement("th")
 
-row.appendChild(addtitle)
-row.appendChild(addauthor)
-row.appendChild(addpage)
-row.appendChild(addread)
-content.appendChild(row)
+//bring up the input 
+const newBook = document.querySelector('.addBtn')
+newBook.addEventListener("click",addBook)
 
 
-myLibrary.forEach(book => {
-    addtitle.innerHTML = book.title
-    addauthor.innerHTML = book.author
-    addpage.innerHTML = book.pages
-    addread.innerHTML = book.read
+function addBook(){
+    const addForm = document.getElementById('addform');
+    if (addForm){
+        addForm.style.display = 'block';
+    }
+    document.getElementById('form').style.display = "block";
+}
+
+//transfer the input data to variable data
+
+const submitBtn = document.querySelector('.submitBtn')
+submitBtn.addEventListener("click", takeInData) 
+
+function takeInData(){
+    let title = document.querySelector("#title").value
+    let author = document.querySelector("#author").value
+    let pages = document.querySelector("#pages").value
+    let read = document.querySelector("#read").value
+
+    addBookToLibrary(title,author,pages,read)
+
+    document.getElementById('form').reset();
+    document.getElementById('form').style.display = "none"
+}
+
+const cancel = document.querySelector(".cancel")
+
+cancel.addEventListener("click", clearForm);
+
+function clearForm(){
+    document.getElementById('form').reset()
+    document.getElementById('form').style.display = "none"
+}
 
 
-    
-});
+
+
